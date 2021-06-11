@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import Header from '../components/Header/Header';
 import Feed from './Feed';
@@ -19,18 +20,20 @@ const AppWrapper = styled.div`
   text-align: center;
 `;
 
-class App extends Component {
-  render() {
-    return (
-      <>
-        <GlobalStyle />
-        <AppWrapper>
-          <Header />
-          <Feed />
-        </AppWrapper>
-      </>
-    );
-  }
+function App() {
+  return (
+    <>
+      <GlobalStyle />
+      <AppWrapper>
+        <Header />
+        <Router>
+          <Route exact path='/' component={Feed} />
+        </Router>
+        <Feed />
+      </AppWrapper>
+    </>
+  )
 }
 
-export default App;
+export default App
+
