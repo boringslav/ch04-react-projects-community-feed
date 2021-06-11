@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-
+import Card from '../components/Card/Card'
 const QuestionWrapper = styled.div`
     dispay:flex;
     justify-content: space-between;
@@ -10,11 +10,29 @@ const QuestionWrapper = styled.div`
 const Alert = styled.div`
     text-align:center;
 `
-function Question() {
-
+function Question({ match }) {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
+
+    const ROOT_API = 'https://api.stackexchange.com/2.2/'
+
+    useEffect(async () => {
+        try {
+            const data = await fetch(`${ROOT_API}questions/${match.params.id}?site=stackoverflow`)
+            const dataJSON = await data.json()
+
+            if (dataJSON) {
+                setData(dataJSON)
+                setLoading(false)
+            }
+
+        } catch (error) {
+            setLoading(true)
+            setError(error.message)
+        }
+
+    }, [])
 
     if (loading || error) {
         return <Alert>{loading ? 'Loading...' : error}</Alert>
@@ -22,7 +40,7 @@ function Question() {
 
     return (
         <QuestionWrapper>
-
+            <Card key={data.items[0].question_id} data={data.items[0]} />
         </QuestionWrapper>
     )
 }
