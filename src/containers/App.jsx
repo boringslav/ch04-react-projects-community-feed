@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import Header from '../components/Header/Header';
 import Feed from './Feed';
@@ -28,8 +28,11 @@ function App() {
       <AppWrapper>
         <Header />
         <Router>
-          <Route exact path='/' component={Feed} />
-          <Route path='/questions/:id' component={Question} />
+          <Switch>
+            <Route exact path='/' component={Feed} />
+            <Route path='/questions/:id' component={Question} /> //questions:id before question because switch matches first url path
+            <Route path="/questions" component={Feed} />
+          </Switch>
         </Router>
       </AppWrapper>
     </>
