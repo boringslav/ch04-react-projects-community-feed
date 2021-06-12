@@ -17,22 +17,25 @@ function Question({ match }) {
 
     const ROOT_API = 'https://api.stackexchange.com/2.2/'
 
-    useEffect(async () => {
-        try {
-            const data = await fetch(`${ROOT_API}questions/${match.params.id}?site=stackoverflow`)
-            const dataJSON = await data.json()
+    useEffect(() => {
+        (async () => {
+            try {
+                const data = await fetch(`${ROOT_API}questions/${match.params.id}?site=stackoverflow`)
+                const dataJSON = await data.json()
 
-            if (dataJSON) {
-                setData(dataJSON)
-                setLoading(false)
+                if (dataJSON) {
+                    setData(dataJSON)
+                    setLoading(false)
+                }
+
+            } catch (error) {
+                setLoading(true)
+                setError(error.message)
             }
 
-        } catch (error) {
-            setLoading(true)
-            setError(error.message)
-        }
+        })()
 
-    }, [])
+    })
 
     if (loading || error) {
         return <Alert>{loading ? 'Loading...' : error}</Alert>
