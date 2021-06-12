@@ -14,10 +14,13 @@ const Alert = styled.div`
   text-align: center;
 `;
 
-
+const CardLink = styled(Link)`
+text-decoration: none;
+color:inherit;
+`
 
 function Feed() {
-  const [data, setData] = useState({})
+  const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -27,10 +30,11 @@ function Feed() {
     (async () => {
       try {
         const data = await fetch(
-          `https://api.stackexchange.com/2.2/questions?order=desc&sort=activity&tagged=reactjs&site=stackoverflow`,
+          `${ROOT_API}questions?order=desc&sort=activity&tagged=reactjs&site=stackoverflow`,
         )
         const dataJSON = await data.json()
-        console.log(dataJSON)
+
+
         if (dataJSON) {
           setData(dataJSON)
           setLoading(false)
@@ -41,16 +45,20 @@ function Feed() {
       }
 
     })()
-
   }, [])
+
+  if (loading || error) {
+    return <Alert>{loading ? 'Loading...' : error}</Alert>
+  }
 
   return (
     <FeedWrapper>
-      {/* {data.items.map(item => (
-        <Link key={item.question_id} data={item}>
+      {data.items.map(item => (
+        <CardLink key={item.question_id}
+          to={`/questions/${item.question_id}`}>
           <Card data={item} />
-        </Link>
-      ))} */}
+        </CardLink>
+      ))}
     </FeedWrapper>
   )
 }

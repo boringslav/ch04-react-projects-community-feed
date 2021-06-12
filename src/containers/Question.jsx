@@ -34,8 +34,7 @@ function Question({ match }) {
             }
 
         })()
-
-    })
+    }, [])
 
     if (loading || error) {
         return <Alert>{loading ? 'Loading...' : error}</Alert>
