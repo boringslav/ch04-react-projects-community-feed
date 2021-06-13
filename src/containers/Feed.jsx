@@ -19,6 +19,18 @@ const CardLink = styled(Link)`
 text-decoration: none;
 color:inherit;
 `
+const PaginationBar = styled.div`
+width:100%;
+display:flex;
+justify-content: space-between;
+`
+const PaginationLink = styled(Link)`
+padding:1%;
+background: lightBlue;
+color:white;
+text-decoration: none;
+border-radius:5px;
+`
 
 function Feed(props) {
   const query = queryString.parse(props.location.search)
@@ -72,6 +84,10 @@ function Feed(props) {
           <Card data={item} />
         </CardLink>
       ))}
+      <PaginationBar>
+        <PaginationLink>Previous</PaginationLink>
+        <PaginationLink>Next</PaginationLink>
+      </PaginationBar>
     </FeedWrapper>
   )
 }
