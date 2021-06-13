@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
+import queryString from 'query-string'
 import styled from 'styled-components';
 import Card from '../components/Card/Card';
 
@@ -19,8 +20,10 @@ text-decoration: none;
 color:inherit;
 `
 
-function Feed() {
+function Feed(props) {
+  const query = queryString.parse(props.location.search)
   const [data, setData] = useState([])
+  const [page, setPage] = useState()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -28,9 +31,10 @@ function Feed() {
 
   useEffect(() => {
     (async () => {
+
       try {
         const data = await fetch(
-          `${ROOT_API}questions?order=desc&sort=activity&tagged=reactjs&site=stackoverflow`,
+          `${ROOT_API}questions?order=desc&sort=activity&tagged=reactjs&site=stackoverflow${(page) ? `&page=${page}` : ''}`,
         )
         const dataJSON = await data.json()
 
@@ -46,6 +50,15 @@ function Feed() {
 
     })()
   }, [])
+
+  useEffect(() => {
+    if (query.page) {
+      setPage(parseInt(query.page))
+    } else {
+      setPage(1)
+    }
+  }, [])
+
 
   if (loading || error) {
     return <Alert>{loading ? 'Loading...' : error}</Alert>
