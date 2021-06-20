@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import queryString from 'query-string'
 import styled from 'styled-components';
 import Card from '../components/Card/Card';
-
+import { Helmet } from 'react-helmet';
 const FeedWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -81,22 +81,34 @@ function Feed(props) {
 
 
   if (loading || error) {
-    return <Alert>{loading ? 'Loading...' : error}</Alert>
+    return (
+      <>
+        <Helmet>
+          <title>Q&A Feed - Questions</title>
+        </Helmet>
+        <Alert>{loading ? 'Loading...' : error}</Alert>
+      </>
+    )
   }
 
   return (
-    <FeedWrapper>
-      {data.items.map(item => (
-        <CardLink key={item.question_id}
-          to={`/questions/${item.question_id}`}>
-          <Card data={item} />
-        </CardLink>
-      ))}
-      <PaginationBar>
-        {page > 1 && <PaginationLink to={`${match.url}?page=${page - 1}`}>Previous</PaginationLink>}
-        {data.has_more && <PaginationLink to={`${match.url}?page=${page + 1}`}>Next</PaginationLink>}
-      </PaginationBar>
-    </FeedWrapper>
+    <>
+      <Helmet>
+        <title>Q&A Feed - Questions</title>
+      </Helmet>
+      <FeedWrapper>
+        {data.items.map(item => (
+          <CardLink key={item.question_id}
+            to={`/questions/${item.question_id}`}>
+            <Card data={item} />
+          </CardLink>
+        ))}
+        <PaginationBar>
+          {page > 1 && <PaginationLink to={`${match.url}?page=${page - 1}`}>Previous</PaginationLink>}
+          {data.has_more && <PaginationLink to={`${match.url}?page=${page + 1}`}>Next</PaginationLink>}
+        </PaginationBar>
+      </FeedWrapper>
+    </>
   )
 }
 

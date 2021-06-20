@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Card from '../components/Card/Card'
+import { Helmet } from 'react-helmet'
 const QuestionWrapper = styled.div`
     dispay:flex;
     justify-content: space-between;
@@ -37,13 +38,25 @@ function Question({ match }) {
     }, [])
 
     if (loading || error) {
-        return <Alert>{loading ? 'Loading...' : error}</Alert>
+        return (
+            <>
+                <Helmet>
+                    <title>Q&A Feed - Question #{match.params.id}</title>
+                </Helmet>
+                <Alert>{loading ? 'Loading...' : error}</Alert>
+            </>
+        )
     }
 
     return (
-        <QuestionWrapper>
-            <Card key={data.items[0].question_id} data={data.items[0]} />
-        </QuestionWrapper>
+        <>
+            <Helmet>
+                <title>Q&A Feed - Question #{match.params.id}</title>
+            </Helmet>
+            <QuestionWrapper>
+                <Card key={data.items[0].question_id} data={data.items[0]} />
+            </QuestionWrapper>
+        </>
     )
 }
 
